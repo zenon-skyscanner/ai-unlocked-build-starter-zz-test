@@ -2,6 +2,10 @@
 
 A simple, clean starter template for a travel company website built with Astro, React, Tailwind CSS, and Astro DB. This project serves as a foundation for developers to build upon.
 
+## 📸 Screenshot
+
+![Website screenshot](./docs/images/website.png)
+
 ## 🌟 Features
 
 - **Static Pages**: Home, Products, About, Contact pages with responsive navigation
@@ -74,7 +78,6 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run db:push`         | Push database schema to Astro DB                 |
 | `npm run db:seed`         | Seed database with sample articles               |
-| `npm run db:studio`       | Open Astro DB Studio to manage data              |
 
 ## 📄 Pages Overview
 
