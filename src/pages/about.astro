@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+---
+
+<Layout>
+	<Navigation currentPath="/about" />
+	
+	<main class="container mx-auto px-4 py-12">
+		<section class="text-center mb-16">
+			<h1 class="text-5xl font-bold text-blue-600 mb-4">About Travel Company</h1>
+			<p class="text-xl text-gray-600">Your trusted partner in travel</p>
+		</section>
+
+		<section class="max-w-3xl mx-auto">
+			<h2 class="text-3xl font-bold mb-6">Our Story</h2>
+			<p class="text-lg text-gray-700 mb-4">
+				Founded in 2020, Travel Company has been dedicated to creating unforgettable 
+				travel experiences for adventurers around the world. We believe that travel 
+				transforms lives and creates lasting memories.
+			</p>
+
+			<h2 class="text-3xl font-bold mb-6 mt-12">Our Mission</h2>
+			<p class="text-lg text-gray-700 mb-4">
+				To make travel accessible, enjoyable, and meaningful for everyone. We curate 
+				unique experiences that connect people with cultures, nature, and themselves.
+			</p>
+
+			<h2 class="text-3xl font-bold mb-6 mt-12">Why Choose Us</h2>
+			<ul class="list-disc list-inside text-lg text-gray-700 space-y-2">
+				<li>Expert travel planners with years of experience</li>
+				<li>Personalized itineraries tailored to your preferences</li>
+				<li>24/7 customer support throughout your journey</li>
+				<li>Best price guarantee on all our packages</li>
+			</ul>
+		</section>
+	</main>
+</Layout>
