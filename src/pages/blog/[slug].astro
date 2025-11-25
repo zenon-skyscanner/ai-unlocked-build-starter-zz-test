@@ -1,0 +1,98 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import { db, Article, eq } from 'astro:db';
+
+export async function getStaticPaths() {
+  const articles = await db.select().from(Article).all();
+  
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+---
+
+<Layout>
+	<Navigation currentPath="/blog" />
+	
+	<main class="container mx-auto px-4 py-12">
+		<article class="max-w-3xl mx-auto">
+			<div class="mb-8">
+				<a href="/blog" class="text-blue-600 hover:underline mb-4 inline-block">
+					← Back to Blog
+				</a>
+				<div class="text-sm text-blue-600 font-semibold mb-2">{article.category}</div>
+				<h1 class="text-5xl font-bold mb-4">{article.title}</h1>
+				<div class="flex items-center gap-4 text-gray-600">
+					<span>By {article.author}</span>
+					<span>•</span>
+					<span>{new Date(article.publishedDate).toLocaleDateString('en-US', { 
+						year: 'numeric', 
+						month: 'long', 
+						day: 'numeric' 
+					})}</span>
+				</div>
+			</div>
+
+			<div class="h-96 bg-gray-200 rounded-lg mb-8 flex items-center justify-center">
+				<span class="text-gray-400 text-xl">Article Image Placeholder</span>
+			</div>
+
+			<div class="prose prose-lg max-w-none">
+				<div class="text-xl text-gray-700 mb-8 font-medium">
+					{article.excerpt}
+				</div>
+				
+				<div class="text-gray-800 leading-relaxed whitespace-pre-line">
+					{article.content}
+				</div>
+			</div>
+
+			<div class="mt-12 pt-8 border-t">
+				<h3 class="text-2xl font-bold mb-4">About the Author</h3>
+				<p class="text-gray-700">
+					{article.author} is a travel writer and photographer passionate about sharing stories from around the world.
+				</p>
+			</div>
+		</article>
+
+		<div class="max-w-3xl mx-auto mt-12">
+			<a 
+				href="/blog" 
+				class="inline-block bg-blue-600 text-white px-6 py-3 rounded font-semibold hover:bg-blue-700"
+			>
+				← Back to All Articles
+			</a>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.prose h2 {
+		font-size: 1.875rem;
+		font-weight: bold;
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.prose h3 {
+		font-size: 1.5rem;
+		font-weight: bold;
+		margin-top: 1.5rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.prose ul {
+		list-style-type: disc;
+		margin-left: 1.5rem;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.prose li {
+		margin-bottom: 0.5rem;
+	}
+</style>

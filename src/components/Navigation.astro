@@ -9,6 +9,7 @@ const { currentPath } = Astro.props;
 			<ul class="flex gap-6">
 				<li><a href="/" class={currentPath === '/' ? 'font-bold underline' : 'hover:underline'}>Home</a></li>
 				<li><a href="/products" class={currentPath === '/products' ? 'font-bold underline' : 'hover:underline'}>Products</a></li>
+				<li><a href="/blog" class={currentPath === '/blog' ? 'font-bold underline' : 'hover:underline'}>Blog</a></li>
 				<li><a href="/about" class={currentPath === '/about' ? 'font-bold underline' : 'hover:underline'}>About</a></li>
 				<li><a href="/contact" class={currentPath === '/contact' ? 'font-bold underline' : 'hover:underline'}>Contact</a></li>
 			</ul>
