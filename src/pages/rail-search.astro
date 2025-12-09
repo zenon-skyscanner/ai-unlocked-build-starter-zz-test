@@ -72,19 +72,33 @@ const cities = [...new Set([
 <Layout>
 	<Navigation currentPath="/rail-search" />
 
-	<main class="container mx-auto px-4 py-12">
-		<section class="text-center mb-12">
-			<h1 class="text-5xl font-bold text-blue-600 mb-4">Rail Search</h1>
-			<p class="text-xl text-gray-600">Find your perfect train journey across Italy</p>
+	<main class="relative pb-20">
+		<!-- Hero Section -->
+		<section class="relative overflow-hidden py-16 mb-12">
+			<div class="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+			<div class="absolute inset-0 dots-pattern opacity-20"></div>
+
+			<div class="container mx-auto px-4 relative z-10">
+				<div class="text-center max-w-3xl mx-auto">
+					<div class="inline-block mb-4 px-4 py-2 rounded-full bg-white shadow-md">
+						<span class="text-sm font-semibold text-purple-600">🚄 Real-time Search</span>
+					</div>
+					<h1 class="text-7xl font-black heading-gradient mb-6">
+						Rail Search
+					</h1>
+					<p class="text-2xl text-gray-600 font-light">Find your perfect train journey across <span class="font-semibold text-orange-500">Italy</span></p>
+				</div>
+			</div>
 		</section>
 
 		<!-- Search Form -->
-		<section class="max-w-4xl mx-auto mb-12">
-			<form method="GET" action="/rail-search" class="bg-white rounded-lg shadow-lg p-8">
-				<div class="grid md:grid-cols-3 gap-6">
-					<div>
-						<label for="origin" class="block text-sm font-semibold text-gray-700 mb-2">
-							Origin
+		<section class="max-w-5xl mx-auto mb-16 px-4">
+			<form method="GET" action="/rail-search" class="glass rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-white/50">
+				<div class="grid md:grid-cols-3 gap-6 mb-8">
+					<div class="group">
+						<label for="origin" class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
+							<span class="text-xl">📍</span>
+							<span>From</span>
 						</label>
 						<input
 							type="text"
@@ -93,13 +107,14 @@ const cities = [...new Set([
 							value={origin}
 							list="cities"
 							placeholder="e.g., Rome"
-							class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl text-lg font-medium focus:ring-0 focus:border-purple-400 transition-all hover:border-purple-300"
 						/>
 					</div>
 
-					<div>
-						<label for="destination" class="block text-sm font-semibold text-gray-700 mb-2">
-							Destination
+					<div class="group">
+						<label for="destination" class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
+							<span class="text-xl">🎯</span>
+							<span>To</span>
 						</label>
 						<input
 							type="text"
@@ -108,30 +123,34 @@ const cities = [...new Set([
 							value={destination}
 							list="cities"
 							placeholder="e.g., Milan"
-							class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl text-lg font-medium focus:ring-0 focus:border-purple-400 transition-all hover:border-purple-300"
 						/>
 					</div>
 
-					<div>
-						<label for="departureDate" class="block text-sm font-semibold text-gray-700 mb-2">
-							Departure Date
+					<div class="group">
+						<label for="departureDate" class="flex items-center gap-2 text-sm font-bold text-gray-700 mb-3">
+							<span class="text-xl">📅</span>
+							<span>Departure</span>
 						</label>
 						<input
 							type="date"
 							id="departureDate"
 							name="departureDate"
 							value={departureDate}
-							class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+							class="w-full px-5 py-4 bg-white border-2 border-gray-200 rounded-2xl text-lg font-medium focus:ring-0 focus:border-purple-400 transition-all hover:border-purple-300"
 						/>
 					</div>
 				</div>
 
-				<div class="mt-6 text-center">
+				<div class="text-center">
 					<button
 						type="submit"
-						class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+						class="btn-primary cursor-pointer text-xl group"
 					>
-						Search Trains
+						🔍 Search Trains
+						<svg class="inline-block w-6 h-6 ml-2 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+						</svg>
 					</button>
 				</div>
 			</form>
@@ -144,45 +163,81 @@ const cities = [...new Set([
 
 		<!-- Search Results -->
 		{(origin || destination || departureDate) && (
-			<section class="max-w-6xl mx-auto">
+			<section class="max-w-6xl mx-auto px-4">
 				{trips.length > 0 ? (
 					<>
-						<h2 class="text-2xl font-bold text-gray-800 mb-6">
-							Found {trips.length} {trips.length === 1 ? 'trip' : 'trips'}
-						</h2>
-						<div class="space-y-4">
-							{trips.map((trip) => (
-								<div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-									<div class="grid md:grid-cols-5 gap-4 items-center">
-										<!-- Origin & Time -->
-										<div class="text-center">
-											<div class="text-2xl font-bold text-gray-800">{formatDateTime(trip.departureDateTime)}</div>
-											<div class="text-lg font-semibold text-blue-600 mt-1">{trip.origin}</div>
-										</div>
-
-										<!-- Arrow & Duration -->
-										<div class="text-center">
-											<div class="text-gray-400 text-2xl">→</div>
-											<div class="text-sm text-gray-600 mt-1">{formatDuration(trip.duration)}</div>
-										</div>
-
-										<!-- Destination & Time -->
-										<div class="text-center">
-											<div class="text-2xl font-bold text-gray-800">{formatDateTime(trip.arrivalDateTime)}</div>
-											<div class="text-lg font-semibold text-blue-600 mt-1">{trip.destination}</div>
-										</div>
-
-										<!-- Carrier & Stops -->
-										<div class="md:col-span-2">
-											<div class="text-sm font-semibold text-gray-700">{trip.carrier}</div>
-											{trip.stops && trip.stops.length > 0 && (
-												<div class="text-sm text-gray-600 mt-1">
-													<span class="font-medium">Stops:</span> {trip.stops}
+						<div class="flex items-center justify-between mb-8">
+							<h2 class="text-3xl font-black heading-gradient">
+								Found {trips.length} {trips.length === 1 ? 'trip' : 'trips'} ✨
+							</h2>
+							<div class="px-4 py-2 rounded-full bg-gradient-to-r from-green-100 to-emerald-100 border-2 border-green-200">
+								<span class="text-green-700 font-bold text-sm">🎉 Available Now</span>
+							</div>
+						</div>
+						<div class="space-y-6">
+							{trips.map((trip, index) => (
+								<div class="card group cursor-pointer" style={`animation-delay: ${index * 0.05}s`}>
+									<div class="p-6 md:p-8">
+										<div class="grid md:grid-cols-12 gap-6 items-center">
+											<!-- Origin Station -->
+											<div class="md:col-span-3 text-center md:text-left">
+												<div class="inline-block mb-2 px-3 py-1 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 text-purple-700 text-xs font-bold">
+													DEPARTURE
 												</div>
-											)}
-											{(!trip.stops || trip.stops.length === 0) && (
-												<div class="text-sm text-green-600 mt-1">Direct</div>
-											)}
+												<div class="text-4xl font-black text-gray-800">{formatDateTime(trip.departureDateTime)}</div>
+												<div class="text-xl font-bold text-purple-600 mt-2 flex items-center justify-center md:justify-start gap-2">
+													<span>📍</span>
+													<span>{trip.origin}</span>
+												</div>
+											</div>
+
+											<!-- Journey Visualization -->
+											<div class="md:col-span-3 flex flex-col items-center justify-center">
+												<div class="relative w-full">
+													<div class="h-1 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 rounded-full"></div>
+													<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+														<div class="bg-white rounded-full p-3 shadow-lg border-2 border-orange-400">
+															<span class="text-2xl">🚄</span>
+														</div>
+													</div>
+												</div>
+												<div class="mt-4 px-4 py-2 rounded-full bg-orange-100 text-orange-700 font-bold text-sm">
+													⏱️ {formatDuration(trip.duration)}
+												</div>
+											</div>
+
+											<!-- Destination Station -->
+											<div class="md:col-span-3 text-center md:text-left">
+												<div class="inline-block mb-2 px-3 py-1 rounded-full bg-gradient-to-r from-orange-100 to-pink-100 text-orange-700 text-xs font-bold">
+													ARRIVAL
+												</div>
+												<div class="text-4xl font-black text-gray-800">{formatDateTime(trip.arrivalDateTime)}</div>
+												<div class="text-xl font-bold text-orange-600 mt-2 flex items-center justify-center md:justify-start gap-2">
+													<span>🎯</span>
+													<span>{trip.destination}</span>
+												</div>
+											</div>
+
+											<!-- Trip Details -->
+											<div class="md:col-span-3 space-y-3">
+												<div class="flex items-center gap-2 text-sm">
+													<span class="px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold text-xs">
+														{trip.carrier}
+													</span>
+												</div>
+												{trip.stops && trip.stops.length > 0 && (
+													<div class="flex items-start gap-2">
+														<span class="text-xs font-bold text-gray-500 mt-1">🛤️ STOPS:</span>
+														<span class="text-sm text-gray-600 font-medium">{trip.stops}</span>
+													</div>
+												)}
+												{(!trip.stops || trip.stops.length === 0) && (
+													<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 font-bold text-xs">
+														<span>⚡</span>
+														<span>DIRECT ROUTE</span>
+													</div>
+												)}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -190,11 +245,15 @@ const cities = [...new Set([
 						</div>
 					</>
 				) : (
-					<div class="bg-yellow-50 border border-yellow-200 rounded-lg p-8 text-center">
-						<p class="text-xl text-gray-700">
-							No trips found matching your search criteria.
+					<div class="glass rounded-3xl p-12 text-center border-2 border-orange-200">
+						<div class="text-6xl mb-6">😕</div>
+						<h3 class="text-3xl font-black text-gray-800 mb-4">
+							No trips found
+						</h3>
+						<p class="text-xl text-gray-600 mb-2">
+							We couldn't find any trains matching your search.
 						</p>
-						<p class="text-gray-600 mt-2">
+						<p class="text-gray-500">
 							Try adjusting your search parameters or selecting different dates.
 						</p>
 					</div>
