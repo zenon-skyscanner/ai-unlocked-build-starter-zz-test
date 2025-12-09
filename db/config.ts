@@ -24,6 +24,7 @@ const RailTrip = defineTable({
     carrier: column.text(),
     duration: column.number(),
     stops: column.text(),
+    price: column.number(),
   },
 });
 
