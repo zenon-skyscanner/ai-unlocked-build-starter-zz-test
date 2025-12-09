@@ -13,6 +13,7 @@ A simple, clean starter template for a travel company website built with Astro, 
 - **Blog System**: Dynamic blog powered by Astro DB with article management
 - **Modern Styling**: Tailwind CSS v4 for beautiful, responsive design
 - **Type-Safe**: Built with TypeScript for better developer experience
+- **Server-Side Rendering**: Full SSR support for dynamic content
 
 ## 🚀 Quick Start
 
@@ -21,18 +22,14 @@ A simple, clean starter template for a travel company website built with Astro, 
    npm install
    ```
 
-2. **Set up the database:**
-   ```sh
-   npm run db:push    # Push schema to database
-   npm run db:seed    # Add sample articles
-   ```
-
-3. **Start the development server:**
+2. **Start the development server:**
    ```sh
    npm run dev
    ```
+   
+   The database will be automatically created and seeded with sample data.
 
-4. **Open your browser:**
+3. **Open your browser:**
    Navigate to `http://localhost:4321`
 
 ## 📁 Project Structure
@@ -41,7 +38,7 @@ A simple, clean starter template for a travel company website built with Astro, 
 /
 ├── db/
 │   ├── config.ts          # Astro DB schema definitions
-│   └── seed.ts            # Sample data for seeding the database
+│   └── seed.ts            # Sample data for articles
 ├── public/                # Static assets
 ├── src/
 │   ├── assets/           # Images and other assets
@@ -60,10 +57,9 @@ A simple, clean starter template for a travel company website built with Astro, 
 │   │       └── [slug].astro    # Dynamic blog post pages
 │   └── styles/
 │       └── global.css          # Global styles and Tailwind
-├── astro.config.mjs       # Astro configuration
+├── astro.config.mjs       # Astro configuration (SSR mode)
 ├── package.json
-├── tsconfig.json
-└── DATABASE.md            # Database setup documentation
+└── tsconfig.json
 ```
 
 ## 🧞 Commands
@@ -76,8 +72,8 @@ All commands are run from the root of the project, from a terminal:
 | `npm run dev`             | Starts local dev server at `localhost:4321`      |
 | `npm run build`           | Build your production site to `./dist/`          |
 | `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run db:push`         | Push database schema to Astro DB                 |
-| `npm run db:seed`         | Seed database with sample articles               |
+
+> **Note:** The database is automatically created and seeded each time you run `npm run dev`.
 
 ## 📄 Pages Overview
 
@@ -97,6 +93,7 @@ All commands are run from the root of the project, from a terminal:
 - Articles stored in Astro DB
 - Category badges and metadata
 - Individual article pages at `/blog/[slug]`
+- Server-side rendering for dynamic content
 
 ### About (`/about`)
 - Company story and mission
@@ -120,7 +117,7 @@ The blog system uses **Astro DB** for data storage. The Article table includes:
 - Category for filtering
 - Optional image URL
 
-See `DATABASE.md` for detailed setup instructions and schema information.
+The project uses **server-side rendering** (`output: 'server'`), which means all blog posts are fetched dynamically on each request. No static site generation is used for blog pages.
 
 ## 🔧 Tech Stack
 
@@ -141,7 +138,7 @@ The built site will be in the `./dist/` directory, ready to deploy to your favor
 ## 📝 Customization Tips
 
 - **Add more products**: Edit the `products` array in `src/components/Products.tsx`
-- **Add blog posts**: Run `npm run db:studio` to add articles via the UI, or edit `db/seed.ts`
+- **Add blog posts**: Add entries to `db/seed.ts` (database auto-seeds on dev server start)
 - **Change styling**: Modify Tailwind classes or add custom CSS in `src/styles/global.css`
 - **Add pages**: Create new `.astro` files in `src/pages/`
 - **Update navigation**: Edit `src/components/Navigation.astro`
