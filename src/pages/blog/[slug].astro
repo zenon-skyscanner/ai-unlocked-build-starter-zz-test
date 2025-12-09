@@ -3,16 +3,19 @@ import Layout from '../../layouts/Layout.astro';
 import Navigation from '../../components/Navigation.astro';
 import { db, Article, eq } from 'astro:db';
 
-export async function getStaticPaths() {
-  const articles = await db.select().from(Article).all();
-  
-  return articles.map((article) => ({
-    params: { slug: article.slug },
-    props: { article },
-  }));
-}
+const { slug } = Astro.params;
 
-const { article } = Astro.props;
+const articles = await db
+  .select()
+  .from(Article)
+  .where(eq(Article.slug, slug!))
+  .all();
+
+const article = articles[0];
+
+if (!article) {
+  return Astro.redirect('/404');
+}
 ---
 
 <Layout>
