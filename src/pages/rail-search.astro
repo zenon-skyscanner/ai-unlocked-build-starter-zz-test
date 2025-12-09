@@ -1,0 +1,42 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import RailSearchFilters from '../components/RailSearchFilters';
+import { db, RailTrip } from 'astro:db';
+
+// Load ALL trips on initial page load
+const allTrips = await db.select().from(RailTrip).all();
+
+// Get unique cities for datalist suggestions
+const cities = [...new Set([
+  ...allTrips.map(t => t.origin),
+  ...allTrips.map(t => t.destination)
+])].sort();
+---
+
+<Layout>
+	<Navigation currentPath="/rail-search" />
+
+	<main class="relative pb-20">
+		<!-- Hero Section -->
+		<section class="relative overflow-hidden py-16 mb-12">
+			<div class="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+			<div class="absolute inset-0 dots-pattern opacity-20"></div>
+
+			<div class="container mx-auto px-4 relative z-10">
+				<div class="text-center max-w-3xl mx-auto">
+					<div class="inline-block mb-4 px-4 py-2 rounded-full bg-white shadow-md">
+						<span class="text-sm font-semibold text-purple-600">🚄 Real-time Search</span>
+					</div>
+					<h1 class="text-7xl font-black heading-gradient mb-6">
+						Rail Search
+					</h1>
+					<p class="text-2xl text-gray-600 font-light">Find your perfect train journey across <span class="font-semibold text-orange-500">Italy</span></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- React Component for Filtering and Display -->
+		<RailSearchFilters client:load allTrips={allTrips} cities={cities} />
+	</main>
+</Layout>

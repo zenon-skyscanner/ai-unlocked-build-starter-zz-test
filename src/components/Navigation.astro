@@ -2,16 +2,76 @@
 const { currentPath } = Astro.props;
 ---
 
-<nav class="bg-blue-600 text-white">
+<nav class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white shadow-lg">
 	<div class="container mx-auto px-4">
 		<div class="flex items-center justify-between py-4">
-			<div class="text-2xl font-bold">Travel Company</div>
-			<ul class="flex gap-6">
-				<li><a href="/" class={currentPath === '/' ? 'font-bold underline' : 'hover:underline'}>Home</a></li>
-				<li><a href="/products" class={currentPath === '/products' ? 'font-bold underline' : 'hover:underline'}>Products</a></li>
-				<li><a href="/blog" class={currentPath === '/blog' ? 'font-bold underline' : 'hover:underline'}>Blog</a></li>
-				<li><a href="/about" class={currentPath === '/about' ? 'font-bold underline' : 'hover:underline'}>About</a></li>
-				<li><a href="/contact" class={currentPath === '/contact' ? 'font-bold underline' : 'hover:underline'}>Contact</a></li>
+			<a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
+				<img src="/logo.svg" alt="McClickity Trip Logo" class="w-10 h-10 rounded-full shadow-md" />
+				<div class="text-2xl font-bold tracking-tight">
+					McClickity <span class="text-orange-300">Trip</span>
+				</div>
+			</a>
+			<ul class="flex gap-6 items-center">
+				<li>
+					<a
+						href="/"
+						class={currentPath === '/'
+							? 'font-semibold border-b-2 border-orange-300 pb-1'
+							: 'hover:text-orange-300 transition-colors'}
+					>
+						Home
+					</a>
+				</li>
+				<li>
+					<a
+						href="/products"
+						class={currentPath === '/products'
+							? 'font-semibold border-b-2 border-orange-300 pb-1'
+							: 'hover:text-orange-300 transition-colors'}
+					>
+						Products
+					</a>
+				</li>
+				<li>
+					<a
+						href="/rail-search"
+						class={currentPath === '/rail-search'
+							? 'font-semibold border-b-2 border-orange-300 pb-1'
+							: 'hover:text-orange-300 transition-colors'}
+					>
+						Rail Search
+					</a>
+				</li>
+				<li>
+					<a
+						href="/blog"
+						class={currentPath === '/blog'
+							? 'font-semibold border-b-2 border-orange-300 pb-1'
+							: 'hover:text-orange-300 transition-colors'}
+					>
+						Blog
+					</a>
+				</li>
+				<li>
+					<a
+						href="/about"
+						class={currentPath === '/about'
+							? 'font-semibold border-b-2 border-orange-300 pb-1'
+							: 'hover:text-orange-300 transition-colors'}
+					>
+						About
+					</a>
+				</li>
+				<li>
+					<a
+						href="/contact"
+						class={currentPath === '/contact'
+							? 'font-semibold border-b-2 border-orange-300 pb-1'
+							: 'hover:text-orange-300 transition-colors'}
+					>
+						Contact
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>

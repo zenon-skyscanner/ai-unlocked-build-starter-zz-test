@@ -1,0 +1,316 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navigation from '../../components/Navigation.astro';
+import { db, RailTrip, SeatClass, eq } from 'astro:db';
+
+const { id } = Astro.params;
+
+if (!id) {
+  return Astro.redirect('/rail-search');
+}
+
+// Fetch the specific trip by ID
+const trips = await db.select().from(RailTrip).where(eq(RailTrip.id, parseInt(id))).all();
+const trip = trips[0];
+
+if (!trip) {
+  return Astro.redirect('/rail-search');
+}
+
+// Fetch seat classes for this trip
+const seatClasses = await db.select().from(SeatClass).where(eq(SeatClass.tripId, parseInt(id))).all();
+
+// Helper functions
+function formatDuration(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  if (hours === 0) return `${mins}m`;
+  if (mins === 0) return `${hours}h`;
+  return `${hours}h ${mins}m`;
+}
+
+function formatDateTime(dateTime: Date): string {
+  const date = new Date(dateTime);
+  return date.toLocaleString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+}
+
+function formatTime(dateTime: Date): string {
+  const date = new Date(dateTime);
+  return date.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+}
+
+function formatDate(dateTime: Date): string {
+  const date = new Date(dateTime);
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+}
+---
+
+<Layout>
+  <Navigation currentPath="/rail-search" />
+
+  <main class="relative pb-20">
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden py-12 mb-12">
+      <div class="absolute inset-0 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50"></div>
+      <div class="absolute inset-0 dots-pattern opacity-20"></div>
+
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="max-w-5xl mx-auto">
+          <a href="/rail-search" class="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-bold mb-6 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Search
+          </a>
+
+          <div class="glass rounded-3xl shadow-2xl p-8 md:p-12 border-2 border-white/50">
+            <div class="flex items-center justify-between mb-8">
+              <h1 class="text-5xl font-black heading-gradient">
+                Trip Details
+              </h1>
+              <div class="text-6xl font-black text-green-600">
+                €{trip.price.toFixed(2)}
+              </div>
+            </div>
+
+            <!-- Route Overview -->
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+              <!-- Departure -->
+              <div class="text-center">
+                <div class="inline-block mb-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-100 to-purple-100 text-purple-700 text-sm font-bold">
+                  DEPARTURE
+                </div>
+                <div class="text-5xl font-black text-gray-800 mb-2">{formatTime(trip.departureDateTime)}</div>
+                <div class="text-2xl font-bold text-purple-600 mb-2 flex items-center justify-center gap-2">
+                  <span>📍</span>
+                  <span>{trip.origin}</span>
+                </div>
+                <div class="text-sm text-gray-600">{formatDate(trip.departureDateTime)}</div>
+              </div>
+
+              <!-- Duration -->
+              <div class="flex flex-col items-center justify-center">
+                <div class="relative w-full mb-4">
+                  <div class="h-2 bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 rounded-full"></div>
+                  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div class="bg-white rounded-full p-4 shadow-lg border-2 border-orange-400">
+                      <span class="text-3xl">🚄</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="px-6 py-3 rounded-full bg-orange-100 text-orange-700 font-bold text-xl">
+                  ⏱️ {formatDuration(trip.duration)}
+                </div>
+              </div>
+
+              <!-- Arrival -->
+              <div class="text-center">
+                <div class="inline-block mb-3 px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-pink-100 text-orange-700 text-sm font-bold">
+                  ARRIVAL
+                </div>
+                <div class="text-5xl font-black text-gray-800 mb-2">{formatTime(trip.arrivalDateTime)}</div>
+                <div class="text-2xl font-bold text-orange-600 mb-2 flex items-center justify-center gap-2">
+                  <span>🎯</span>
+                  <span>{trip.destination}</span>
+                </div>
+                <div class="text-sm text-gray-600">{formatDate(trip.arrivalDateTime)}</div>
+              </div>
+            </div>
+
+            <!-- Trip Information -->
+            <div class="space-y-6 mb-12">
+              <div class="grid md:grid-cols-2 gap-6">
+                <!-- Carrier -->
+                <div class="glass rounded-2xl p-6 border border-gray-200">
+                  <div class="text-sm font-bold text-gray-500 mb-2">CARRIER</div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-3xl">🚅</span>
+                    <span class="text-2xl font-black text-gray-800">{trip.carrier}</span>
+                  </div>
+                </div>
+
+                <!-- Punctuality -->
+                <div class="glass rounded-2xl p-6 border border-gray-200">
+                  <div class="text-sm font-bold text-gray-500 mb-2">PUNCTUALITY RECORD</div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-3xl">🎯</span>
+                    <span class={`text-2xl font-black ${
+                      trip.punctuality >= 90 ? 'text-green-600' :
+                      trip.punctuality >= 80 ? 'text-yellow-600' :
+                      'text-red-600'
+                    }`}>
+                      {trip.punctuality}% On-Time
+                    </span>
+                  </div>
+                  <div class="text-sm text-gray-600 mt-2">
+                    Historical on-time arrival rate
+                  </div>
+                </div>
+              </div>
+
+              <!-- Amenities -->}
+              <div class="glass rounded-2xl p-6 border border-gray-200">
+                <div class="text-sm font-bold text-gray-500 mb-4">ONBOARD AMENITIES</div>
+                <div class="grid md:grid-cols-3 gap-4">
+                  {trip.hasPowerSockets ? (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50">
+                      <span class="text-3xl">⚡</span>
+                      <div>
+                        <div class="font-bold text-blue-700">Power Sockets</div>
+                        <div class="text-sm text-blue-600">Available at each seat</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100">
+                      <span class="text-3xl opacity-30">⚡</span>
+                      <div>
+                        <div class="font-bold text-gray-500">No Power Sockets</div>
+                        <div class="text-sm text-gray-400">Not available</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {trip.hasWifi ? (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-50">
+                      <span class="text-3xl">📶</span>
+                      <div>
+                        <div class="font-bold text-purple-700">WiFi Available</div>
+                        <div class="text-sm text-purple-600">
+                          Quality: {'⭐'.repeat(trip.wifiReliability || 0)} ({trip.wifiReliability}/5)
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100">
+                      <span class="text-3xl opacity-30">📶</span>
+                      <div>
+                        <div class="font-bold text-gray-500">No WiFi</div>
+                        <div class="text-sm text-gray-400">Not available</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-50">
+                    <span class="text-3xl">💺</span>
+                    <div>
+                      <div class="font-bold text-green-700">Comfortable Seating</div>
+                      <div class="text-sm text-green-600">{seatClasses.length} class options</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <!-- Route Type -->
+                <div class="glass rounded-2xl p-6 border border-gray-200">
+                  <div class="text-sm font-bold text-gray-500 mb-2">ROUTE TYPE</div>
+                  <div class="flex items-center gap-3">
+                    {trip.stops && trip.stops.length > 0 ? (
+                      <>
+                        <span class="text-3xl">🛤️</span>
+                        <span class="text-2xl font-black text-gray-800">With Stops</span>
+                      </>
+                    ) : (
+                      <>
+                        <span class="text-3xl">⚡</span>
+                        <span class="text-2xl font-black text-gray-800">Direct</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Stops -->
+              {trip.stops && trip.stops.length > 0 && (
+                <div class="glass rounded-2xl p-6 border border-gray-200">
+                  <div class="text-sm font-bold text-gray-500 mb-3">INTERMEDIATE STOPS</div>
+                  <div class="flex items-start gap-3">
+                    <span class="text-2xl">🛤️</span>
+                    <span class="text-xl text-gray-700 font-medium">{trip.stops}</span>
+                  </div>
+                </div>
+              )}
+
+              <!-- Seat Classes -->
+              <div class="glass rounded-2xl p-8 border border-gray-200">
+                <div class="text-sm font-bold text-gray-500 mb-2">AVAILABLE SEAT CLASSES</div>
+                <h3 class="text-2xl font-black text-gray-800 mb-6">Choose Your Seating Preference</h3>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {seatClasses.map((seatClass) => {
+                    const totalPrice = trip.price + seatClass.priceModifier;
+                    const isStandard = seatClass.priceModifier === 0;
+                    
+                    return (
+                      <div class={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-xl ${
+                        isStandard ? 'border-green-400 bg-green-50' : 'border-gray-300 bg-white hover:border-purple-400'
+                      }`}>
+                        {isStandard && (
+                          <div class="absolute top-2 right-2 px-3 py-1 rounded-full bg-green-600 text-white text-xs font-bold">
+                            BASE PRICE
+                          </div>
+                        )}
+                        
+                        <div class="mb-4">
+                          <h4 class="text-xl font-black text-gray-800 mb-2">{seatClass.className}</h4>
+                          <p class="text-sm text-gray-600">{seatClass.description}</p>
+                        </div>
+                        
+                        <div class="flex items-end justify-between mb-4">
+                          <div>
+                            <div class="text-3xl font-black text-green-600">
+                              €{totalPrice.toFixed(2)}
+                            </div>
+                            {!isStandard && (
+                              <div class="text-xs text-gray-500 mt-1">
+                                +€{seatClass.priceModifier.toFixed(2)} upgrade
+                              </div>
+                            )}
+                          </div>
+                          
+                          <button class="btn-primary text-sm px-4 py-2">
+                            Select →
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <!-- Booking Section -->
+            <div class="text-center pt-8 border-t-2 border-gray-200">
+              <p class="text-lg text-gray-600 mb-6">
+                Ready to book this journey?
+              </p>
+              <button class="btn-primary text-2xl px-12 py-4">
+                Book Now from €{trip.price.toFixed(2)} →
+              </button>
+              <p class="text-sm text-gray-500 mt-4">
+                Secure booking • Instant confirmation • Flexible tickets
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</Layout>
