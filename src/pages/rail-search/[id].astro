@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Navigation from '../../components/Navigation.astro';
-import { db, RailTrip, eq } from 'astro:db';
+import { db, RailTrip, SeatClass, eq } from 'astro:db';
 
 const { id } = Astro.params;
 
@@ -16,6 +16,9 @@ const trip = trips[0];
 if (!trip) {
   return Astro.redirect('/rail-search');
 }
+
+// Fetch seat classes for this trip
+const seatClasses = await db.select().from(SeatClass).where(eq(SeatClass.tripId, parseInt(id))).all();
 
 // Helper functions
 function formatDuration(minutes: number): string {
@@ -143,6 +146,78 @@ function formatDate(dateTime: Date): string {
                   </div>
                 </div>
 
+                <!-- Punctuality -->
+                <div class="glass rounded-2xl p-6 border border-gray-200">
+                  <div class="text-sm font-bold text-gray-500 mb-2">PUNCTUALITY RECORD</div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-3xl">🎯</span>
+                    <span class={`text-2xl font-black ${
+                      trip.punctuality >= 90 ? 'text-green-600' :
+                      trip.punctuality >= 80 ? 'text-yellow-600' :
+                      'text-red-600'
+                    }`}>
+                      {trip.punctuality}% On-Time
+                    </span>
+                  </div>
+                  <div class="text-sm text-gray-600 mt-2">
+                    Historical on-time arrival rate
+                  </div>
+                </div>
+              </div>
+
+              <!-- Amenities -->}
+              <div class="glass rounded-2xl p-6 border border-gray-200">
+                <div class="text-sm font-bold text-gray-500 mb-4">ONBOARD AMENITIES</div>
+                <div class="grid md:grid-cols-3 gap-4">
+                  {trip.hasPowerSockets ? (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-blue-50">
+                      <span class="text-3xl">⚡</span>
+                      <div>
+                        <div class="font-bold text-blue-700">Power Sockets</div>
+                        <div class="text-sm text-blue-600">Available at each seat</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100">
+                      <span class="text-3xl opacity-30">⚡</span>
+                      <div>
+                        <div class="font-bold text-gray-500">No Power Sockets</div>
+                        <div class="text-sm text-gray-400">Not available</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {trip.hasWifi ? (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-50">
+                      <span class="text-3xl">📶</span>
+                      <div>
+                        <div class="font-bold text-purple-700">WiFi Available</div>
+                        <div class="text-sm text-purple-600">
+                          Quality: {'⭐'.repeat(trip.wifiReliability || 0)} ({trip.wifiReliability}/5)
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-100">
+                      <span class="text-3xl opacity-30">📶</span>
+                      <div>
+                        <div class="font-bold text-gray-500">No WiFi</div>
+                        <div class="text-sm text-gray-400">Not available</div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div class="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-50">
+                    <span class="text-3xl">💺</span>
+                    <div>
+                      <div class="font-bold text-green-700">Comfortable Seating</div>
+                      <div class="text-sm text-green-600">{seatClasses.length} class options</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-6">
                 <!-- Route Type -->
                 <div class="glass rounded-2xl p-6 border border-gray-200">
                   <div class="text-sm font-bold text-gray-500 mb-2">ROUTE TYPE</div>
@@ -172,6 +247,53 @@ function formatDate(dateTime: Date): string {
                   </div>
                 </div>
               )}
+
+              <!-- Seat Classes -->
+              <div class="glass rounded-2xl p-8 border border-gray-200">
+                <div class="text-sm font-bold text-gray-500 mb-2">AVAILABLE SEAT CLASSES</div>
+                <h3 class="text-2xl font-black text-gray-800 mb-6">Choose Your Seating Preference</h3>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {seatClasses.map((seatClass) => {
+                    const totalPrice = trip.price + seatClass.priceModifier;
+                    const isStandard = seatClass.priceModifier === 0;
+                    
+                    return (
+                      <div class={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-xl ${
+                        isStandard ? 'border-green-400 bg-green-50' : 'border-gray-300 bg-white hover:border-purple-400'
+                      }`}>
+                        {isStandard && (
+                          <div class="absolute top-2 right-2 px-3 py-1 rounded-full bg-green-600 text-white text-xs font-bold">
+                            BASE PRICE
+                          </div>
+                        )}
+                        
+                        <div class="mb-4">
+                          <h4 class="text-xl font-black text-gray-800 mb-2">{seatClass.className}</h4>
+                          <p class="text-sm text-gray-600">{seatClass.description}</p>
+                        </div>
+                        
+                        <div class="flex items-end justify-between mb-4">
+                          <div>
+                            <div class="text-3xl font-black text-green-600">
+                              €{totalPrice.toFixed(2)}
+                            </div>
+                            {!isStandard && (
+                              <div class="text-xs text-gray-500 mt-1">
+                                +€{seatClass.priceModifier.toFixed(2)} upgrade
+                              </div>
+                            )}
+                          </div>
+                          
+                          <button class="btn-primary text-sm px-4 py-2">
+                            Select →
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             <!-- Booking Section -->
@@ -180,7 +302,7 @@ function formatDate(dateTime: Date): string {
                 Ready to book this journey?
               </p>
               <button class="btn-primary text-2xl px-12 py-4">
-                Book Now for €{trip.price.toFixed(2)} →
+                Book Now from €{trip.price.toFixed(2)} →
               </button>
               <p class="text-sm text-gray-500 mt-4">
                 Secure booking • Instant confirmation • Flexible tickets

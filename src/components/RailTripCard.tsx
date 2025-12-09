@@ -9,6 +9,10 @@ interface RailTripCardProps {
     duration: number;
     stops: string;
     price: number;
+    hasPowerSockets: boolean;
+    hasWifi: boolean;
+    wifiReliability: number | null;
+    punctuality: number;
   };
   index: number;
 }
@@ -82,17 +86,44 @@ export default function RailTripCard({ trip, index }: RailTripCardProps) {
           <div className="md:col-span-3 space-y-3">
             <div className="text-center md:text-right">
               <div className="text-5xl font-black text-green-600 mb-2">
-                €{trip.price.toFixed(2)}
+                from €{trip.price.toFixed(2)}
               </div>
               <button className="btn-primary text-sm px-6 py-2">
                 View Details →
               </button>
             </div>
-            <div className="flex items-center gap-2 justify-center md:justify-end text-sm">
+            
+            {/* Amenities and Punctuality */}
+            <div className="flex items-center gap-2 justify-center md:justify-end flex-wrap">
               <span className="px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-bold text-xs">
                 {trip.carrier}
               </span>
+              
+              {/* Punctuality Badge */}
+              <span className={`px-2 py-1 rounded-full font-bold text-xs flex items-center gap-1 ${
+                trip.punctuality >= 90 ? 'bg-green-100 text-green-700' :
+                trip.punctuality >= 80 ? 'bg-yellow-100 text-yellow-700' :
+                'bg-red-100 text-red-700'
+              }`}>
+                <span>🎯</span>
+                <span>{trip.punctuality}% on-time</span>
+              </span>
+              
+              {/* Amenity Icons */}
+              {trip.hasPowerSockets && (
+                <span className="px-2 py-1 rounded-full bg-blue-100 text-blue-700 font-bold text-xs flex items-center gap-1" title="Power sockets available">
+                  <span>⚡</span>
+                </span>
+              )}
+              
+              {trip.hasWifi && trip.wifiReliability && (
+                <span className="px-2 py-1 rounded-full bg-purple-100 text-purple-700 font-bold text-xs flex items-center gap-1" title={`WiFi quality: ${trip.wifiReliability}/5`}>
+                  <span>📶</span>
+                  <span>{'⭐'.repeat(trip.wifiReliability)}</span>
+                </span>
+              )}
             </div>
+            
             {trip.stops && trip.stops.length > 0 ? (
               <div className="flex items-start gap-2 justify-center md:justify-end">
                 <span className="text-xs font-bold text-gray-500 mt-1">🛤️ STOPS:</span>

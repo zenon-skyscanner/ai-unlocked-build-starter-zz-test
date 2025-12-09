@@ -11,6 +11,10 @@ interface Trip {
   duration: number;
   stops: string;
   price: number;
+  hasPowerSockets: boolean;
+  hasWifi: boolean;
+  wifiReliability: number | null;
+  punctuality: number;
 }
 
 interface RailSearchFiltersProps {
@@ -24,6 +28,8 @@ export default function RailSearchFilters({ allTrips, cities }: RailSearchFilter
   const [dateFilter, setDateFilter] = useState('');
   const [minPrice, setMinPrice] = useState(0);
   const [maxPrice, setMaxPrice] = useState(200);
+  const [requirePower, setRequirePower] = useState(false);
+  const [requireWifi, setRequireWifi] = useState(false);
 
   // Calculate actual price range from all trips
   const priceRange = useMemo(() => {
@@ -70,9 +76,18 @@ export default function RailSearchFilters({ allTrips, cities }: RailSearchFilter
         return false;
       }
 
+      // Amenity filters
+      if (requirePower && !trip.hasPowerSockets) {
+        return false;
+      }
+      
+      if (requireWifi && !trip.hasWifi) {
+        return false;
+      }
+
       return true;
     });
-  }, [allTrips, originFilter, destinationFilter, dateFilter, minPrice, maxPrice]);
+  }, [allTrips, originFilter, destinationFilter, dateFilter, minPrice, maxPrice, requirePower, requireWifi]);
 
   const handleReset = () => {
     setOriginFilter('');
@@ -80,6 +95,8 @@ export default function RailSearchFilters({ allTrips, cities }: RailSearchFilter
     setDateFilter('');
     setMinPrice(priceRange.min);
     setMaxPrice(priceRange.max);
+    setRequirePower(false);
+    setRequireWifi(false);
   };
 
   return (
@@ -201,6 +218,44 @@ export default function RailSearchFilters({ allTrips, cities }: RailSearchFilter
 
             <div className="text-center text-sm text-gray-600 font-medium mt-4">
               Showing trips between €{minPrice} and €{maxPrice}
+            </div>
+          </div>
+
+          {/* Amenity Filters */}
+          <div className="mt-8 pt-8 border-t-2 border-gray-200">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-700 mb-4">
+              <span className="text-xl">✨</span>
+              <span>Required Amenities</span>
+            </label>
+            
+            <div className="flex flex-wrap gap-4">
+              {/* Power Socket Filter */}
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={requirePower}
+                  onChange={(e) => setRequirePower(e.target.checked)}
+                  className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                />
+                <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 group-hover:bg-blue-100 transition-colors">
+                  <span className="text-xl">⚡</span>
+                  <span className="font-medium text-blue-700">Power Sockets</span>
+                </span>
+              </label>
+
+              {/* WiFi Filter */}
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={requireWifi}
+                  onChange={(e) => setRequireWifi(e.target.checked)}
+                  className="w-5 h-5 text-purple-600 rounded focus:ring-2 focus:ring-purple-500 cursor-pointer"
+                />
+                <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-purple-50 group-hover:bg-purple-100 transition-colors">
+                  <span className="text-xl">📶</span>
+                  <span className="font-medium text-purple-700">WiFi Available</span>
+                </span>
+              </label>
             </div>
           </div>
         </div>
