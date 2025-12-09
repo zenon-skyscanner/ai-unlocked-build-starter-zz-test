@@ -14,6 +14,19 @@ const Article = defineTable({
   },
 });
 
+const RailTrip = defineTable({
+  columns: {
+    id: column.number({ primaryKey: true }),
+    origin: column.text(),
+    destination: column.text(),
+    departureDateTime: column.date(),
+    arrivalDateTime: column.date(),
+    carrier: column.text(),
+    duration: column.number(),
+    stops: column.text(),
+  },
+});
+
 export default defineDb({
-  tables: { Article },
+  tables: { Article, RailTrip },
 })
