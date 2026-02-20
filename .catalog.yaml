@@ -1,0 +1,12 @@
+version: '1'
+type: microservice
+
+component:
+  name: ai-unlocked-build-starter
+  owner:
+    - Voyagers
+  description: AI Unlocked Starter microsite for a playground to test and learn about AI Unlocked features when running AI Unlocked build.
+  serviceClass: economy-class
+  personalDataHandling: none
+  soxScope: False
+  paymentProcessing: False
