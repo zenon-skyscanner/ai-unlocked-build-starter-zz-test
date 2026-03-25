@@ -22,14 +22,19 @@ A simple, clean starter template for a travel company website built with Astro, 
    npm install
    ```
 
-2. **Start the development server:**
+2. **Setup your .env**
+   copy `.env.sample` and make change it to `.env`
+   Then add this API Key on one password
+   [https://start.1password.com/open/i?a=QVPDF5NMEBB5NDN5W7RTNY2ADA&v=ytrdhc2sgt7zwkjcucedznzlfe&i=bxmr4zsxyfrk6sjrnsrl4g2fkq&h=skyscanner.1password.eu](https://start.1password.com/open/i?a=QVPDF5NMEBB5NDN5W7RTNY2ADA&v=ytrdhc2sgt7zwkjcucedznzlfe&i=bxmr4zsxyfrk6sjrnsrl4g2fkq&h=skyscanner.1password.eu)
+
+3. **Start the development server:**
    ```sh
    npm run dev
    ```
    
    The database will be automatically created and seeded with sample data.
 
-3. **Open your browser:**
+4. **Open your browser:**
    Navigate to `http://localhost:4321`
 
 ## 📁 Project Structure
