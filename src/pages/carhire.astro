@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import CarHireSearch from '../components/CarHireSearch';
+---
+
+<Layout>
+	<Navigation currentPath="/carhire" />
+
+	<main class="container mx-auto px-4 py-12">
+		<section class="text-center mb-16">
+			<h1 class="text-5xl font-bold text-blue-600 mb-4">Car Hire Search</h1>
+			<p class="text-xl text-gray-600">Search live car hire prices</p>
+		</section>
+		<section class="max-w-3xl mx-auto">
+			<CarHireSearch client:load />
+		</section>
+	</main>
+</Layout>
