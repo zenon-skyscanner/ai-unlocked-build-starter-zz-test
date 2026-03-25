@@ -1,0 +1,39 @@
+{
+    "servers": {
+        "chrome-devtools": {
+            "command": "npx",
+            "args": ["chrome-devtools-mcp@latest"]
+        },
+        "github": {
+            "url": "https://api.githubcopilot.com/mcp/",
+            "type": "http"
+        },
+        "atlassian": {
+            "type": "http",
+            "url": "https://mcp.atlassian.com/v1/mcp"
+        },
+        "cortex": {
+            "url": "https://mcp.cortex.io/mcp",
+            "type": "http",
+            "headers": {
+                "Authorization": "Bearer ${input:cortex-token}"
+            }
+        },
+        "newrelic": {
+            "url": "https://mcp.newrelic.com/mcp/",
+            "type": "http"
+        },
+        "miro": {
+            "type": "http",
+            "url": "https://mcp.miro.com"
+        }
+    },
+"inputs": [
+    {
+      "type": "promptString",
+      "id": "cortex-token",
+      "description": "Cortex Token",
+      "password": true
+    }
+  ]
+}
