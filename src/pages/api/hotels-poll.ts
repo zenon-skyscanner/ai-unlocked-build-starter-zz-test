@@ -11,7 +11,12 @@ export const POST: APIRoute = async ({ request }) => {
         'Content-Type': 'application/json',
         'x-api-key': import.meta.env.SKYSCANNER_API_KEY,
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        pagination: {
+          offset: 0,
+          limit: 25,
+        },
+      }),
     }
   );
 
