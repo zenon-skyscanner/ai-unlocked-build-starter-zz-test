@@ -1,90 +1,123 @@
 @import "tailwindcss";
 
-/* ===== London Tube Theme ===== */
-/* Activated by adding .london-theme to <html> */
+/* ===== Multi-City Theme System ===== */
+/* Activated by adding .city-{name} to <html> */
 
-.london-theme .bg-blue-600 {
-  background-color: #003688 !important; /* Piccadilly */
-}
-.london-theme .bg-blue-700,
-.london-theme .hover\:bg-blue-700:hover {
-  background-color: #002d73 !important; /* Piccadilly darker */
-}
-.london-theme .text-blue-600 {
-  color: #E32017 !important; /* Central red */
-}
-.london-theme .text-blue-700 {
-  color: #c41a12 !important; /* Central red darker */
-}
-.london-theme .bg-green-600 {
-  background-color: #00782A !important; /* District green */
-}
-.london-theme .bg-green-700,
-.london-theme .hover\:bg-green-700:hover {
-  background-color: #005f22 !important; /* District darker */
-}
-.london-theme .text-green-700,
-.london-theme .text-green-800 {
-  color: #00782A !important; /* District green */
-}
-.london-theme .bg-green-100 {
-  background-color: #d4f0de !important;
-}
-.london-theme .bg-blue-100 {
-  background-color: #d6e4f5 !important;
-}
-.london-theme .text-blue-800 {
-  color: #003688 !important;
-}
-.london-theme .bg-purple-100 {
-  background-color: #e8dff0 !important;
-}
-.london-theme .text-purple-800 {
-  color: #6950A1 !important; /* Elizabeth line */
-}
-.london-theme .bg-amber-100 {
-  background-color: #fff4cc !important;
-}
-.london-theme .text-amber-800 {
-  color: #B36305 !important; /* Bakerloo */
-}
-.london-theme .bg-cyan-100 {
-  background-color: #ccf0f1 !important;
-}
-.london-theme .text-cyan-800 {
-  color: #00A4A7 !important; /* DLR teal */
-}
-.london-theme .bg-orange-100 {
-  background-color: #fde8cc !important;
-}
-.london-theme .text-orange-800 {
-  color: #EE7C0E !important; /* Overground */
+/* Default CSS custom properties */
+:root {
+  --theme-nav-bg: #2563eb;
+  --theme-heading-color: #2563eb;
+  --theme-gradient-from: #2563eb;
+  --theme-gradient-to: #4338ca;
+  --theme-btn-bg: #2563eb;
+  --theme-btn-hover: #1d4ed8;
+  --theme-accent: #2563eb;
 }
 
-/* Gradient banner override for perks page */
-.london-theme .from-blue-600 {
-  --tw-gradient-from: #E32017 !important; /* Central red */
+/* London — Tube palette */
+.city-london {
+  --theme-nav-bg: #003688;
+  --theme-heading-color: #E32017;
+  --theme-gradient-from: #E32017;
+  --theme-gradient-to: #9B0056;
+  --theme-btn-bg: #003688;
+  --theme-btn-hover: #002d73;
+  --theme-accent: #FFD300;
 }
-.london-theme .to-indigo-700 {
-  --tw-gradient-to: #9B0056 !important; /* Metropolitan */
+
+/* Paris — RATP Metro palette */
+.city-paris {
+  --theme-nav-bg: #003CA6;
+  --theme-heading-color: #003CA6;
+  --theme-gradient-from: #003CA6;
+  --theme-gradient-to: #6A1B9A;
+  --theme-btn-bg: #003CA6;
+  --theme-btn-hover: #002d80;
+  --theme-accent: #D4AF37;
+}
+
+/* Rome — Italian tricolore */
+.city-rome {
+  --theme-nav-bg: #2E8B57;
+  --theme-heading-color: #CE2B37;
+  --theme-gradient-from: #2E8B57;
+  --theme-gradient-to: #CE2B37;
+  --theme-btn-bg: #2E8B57;
+  --theme-btn-hover: #236B43;
+  --theme-accent: #CE2B37;
+}
+
+/* Tokyo — JR / Japan Rail palette */
+.city-tokyo {
+  --theme-nav-bg: #C9002E;
+  --theme-heading-color: #C9002E;
+  --theme-gradient-from: #C9002E;
+  --theme-gradient-to: #8B0000;
+  --theme-btn-bg: #C9002E;
+  --theme-btn-hover: #a30025;
+  --theme-accent: #E60012;
+}
+
+/* New York — Taxi palette */
+.city-newyork {
+  --theme-nav-bg: #1C1C1C;
+  --theme-heading-color: #FFD300;
+  --theme-gradient-from: #FFD300;
+  --theme-gradient-to: #FF8C00;
+  --theme-btn-bg: #1C1C1C;
+  --theme-btn-hover: #333333;
+  --theme-accent: #FFD300;
+}
+
+/* === Tailwind utility overrides when any city theme is active === */
+
+[class*="city-"] .bg-blue-600 {
+  background-color: var(--theme-nav-bg) !important;
+}
+[class*="city-"] .bg-blue-700,
+[class*="city-"] .hover\:bg-blue-700:hover {
+  background-color: var(--theme-btn-hover) !important;
+}
+[class*="city-"] .text-blue-600 {
+  color: var(--theme-heading-color) !important;
+}
+[class*="city-"] .text-blue-700 {
+  color: var(--theme-heading-color) !important;
+}
+
+/* Gradient overrides (perks banner etc.) */
+[class*="city-"] .from-blue-600 {
+  --tw-gradient-from: var(--theme-gradient-from) !important;
+}
+[class*="city-"] .to-indigo-700 {
+  --tw-gradient-to: var(--theme-gradient-to) !important;
 }
 
 /* Category filter pills */
-.london-theme .rounded-full.bg-blue-600 {
-  background-color: #003688 !important;
+[class*="city-"] .rounded-full.bg-blue-600 {
+  background-color: var(--theme-nav-bg) !important;
 }
 
-/* Blog/page category badges */
-.london-theme .bg-blue-500 {
-  background-color: #0098D4 !important; /* Victoria blue */
+/* Blog/page badges */
+[class*="city-"] .bg-blue-500 {
+  background-color: var(--theme-nav-bg) !important;
+}
+
+/* Green button overrides */
+[class*="city-"] .bg-green-600 {
+  background-color: #00782A !important;
+}
+[class*="city-"] .hover\:bg-green-700:hover {
+  background-color: #005f22 !important;
 }
 
 /* Links */
-.london-theme a.text-blue-600:hover {
-  color: #c41a12 !important;
+[class*="city-"] a.text-blue-600:hover {
+  color: var(--theme-heading-color) !important;
+  filter: brightness(0.85);
 }
 
-/* Hide elements marked with .london-hide when London theme is active */
-.london-theme .london-hide {
+/* Hide default page headings when any city theme is active */
+[class*="city-"] .city-hide {
   display: none;
 }

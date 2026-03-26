@@ -10,9 +10,12 @@ import "../styles/global.css";
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
 		<script is:inline>
-			if (localStorage.getItem('skybound-london-theme') === 'true') {
-				document.documentElement.classList.add('london-theme');
-			}
+			(function() {
+				var cityId = localStorage.getItem('skybound-city-theme');
+				if (cityId && cityId !== 'none') {
+					document.documentElement.classList.add('city-' + cityId);
+				}
+			})();
 		</script>
 	</head>
 	<body>
