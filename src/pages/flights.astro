@@ -8,11 +8,11 @@ import FlightsSearch from '../components/FlightsSearch';
 	<Navigation currentPath="/flights" />
 
 	<main class="container mx-auto px-4 py-12">
-		<section class="text-center mb-16">
+		<section class="text-center mb-16 london-hide">
 			<h1 class="text-5xl font-bold text-blue-600 mb-4">Flight Search</h1>
 			<p class="text-xl text-gray-600">Search live flight prices</p>
 		</section>
-		<section class="max-w-3xl mx-auto">
+		<section class="max-w-4xl mx-auto">
 			<FlightsSearch client:load />
 		</section>
 	</main>

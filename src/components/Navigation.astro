@@ -1,17 +1,22 @@
 ---
+import ThemeToggle from './ThemeToggle';
 const { currentPath } = Astro.props;
 ---
 
 <nav class="bg-blue-600 text-white">
 	<div class="container mx-auto px-4">
 		<div class="flex items-center justify-between py-4">
-			<div class="text-2xl font-bold">Travel Company</div>
+			<div class="flex items-center gap-4">
+				<ThemeToggle client:load />
+				<div class="text-2xl font-bold">Travel Company</div>
+			</div>
 			<ul class="flex gap-6">
 				<li><a href="/" class={currentPath === '/' ? 'font-bold underline' : 'hover:underline'}>Home</a></li>
 				<li><a href="/products" class={currentPath === '/products' ? 'font-bold underline' : 'hover:underline'}>Products</a></li>
 				<li><a href="/flights" class={currentPath === '/flights' ? 'font-bold underline' : 'hover:underline'}>Flights</a></li>
 				<li><a href="/hotels" class={currentPath === '/hotels' ? 'font-bold underline' : 'hover:underline'}>Hotels</a></li>
 				<li><a href="/carhire" class={currentPath === '/carhire' ? 'font-bold underline' : 'hover:underline'}>Car Hire</a></li>
+				<li><a href="/perks" class={currentPath === '/perks' ? 'font-bold underline' : 'hover:underline'}>Perks</a></li>
 				<li><a href="/blog" class={currentPath === '/blog' ? 'font-bold underline' : 'hover:underline'}>Blog</a></li>
 				<li><a href="/about" class={currentPath === '/about' ? 'font-bold underline' : 'hover:underline'}>About</a></li>
 				<li><a href="/contact" class={currentPath === '/contact' ? 'font-bold underline' : 'hover:underline'}>Contact</a></li>

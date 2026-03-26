@@ -1,1 +1,90 @@
 @import "tailwindcss";
+
+/* ===== London Tube Theme ===== */
+/* Activated by adding .london-theme to <html> */
+
+.london-theme .bg-blue-600 {
+  background-color: #003688 !important; /* Piccadilly */
+}
+.london-theme .bg-blue-700,
+.london-theme .hover\:bg-blue-700:hover {
+  background-color: #002d73 !important; /* Piccadilly darker */
+}
+.london-theme .text-blue-600 {
+  color: #E32017 !important; /* Central red */
+}
+.london-theme .text-blue-700 {
+  color: #c41a12 !important; /* Central red darker */
+}
+.london-theme .bg-green-600 {
+  background-color: #00782A !important; /* District green */
+}
+.london-theme .bg-green-700,
+.london-theme .hover\:bg-green-700:hover {
+  background-color: #005f22 !important; /* District darker */
+}
+.london-theme .text-green-700,
+.london-theme .text-green-800 {
+  color: #00782A !important; /* District green */
+}
+.london-theme .bg-green-100 {
+  background-color: #d4f0de !important;
+}
+.london-theme .bg-blue-100 {
+  background-color: #d6e4f5 !important;
+}
+.london-theme .text-blue-800 {
+  color: #003688 !important;
+}
+.london-theme .bg-purple-100 {
+  background-color: #e8dff0 !important;
+}
+.london-theme .text-purple-800 {
+  color: #6950A1 !important; /* Elizabeth line */
+}
+.london-theme .bg-amber-100 {
+  background-color: #fff4cc !important;
+}
+.london-theme .text-amber-800 {
+  color: #B36305 !important; /* Bakerloo */
+}
+.london-theme .bg-cyan-100 {
+  background-color: #ccf0f1 !important;
+}
+.london-theme .text-cyan-800 {
+  color: #00A4A7 !important; /* DLR teal */
+}
+.london-theme .bg-orange-100 {
+  background-color: #fde8cc !important;
+}
+.london-theme .text-orange-800 {
+  color: #EE7C0E !important; /* Overground */
+}
+
+/* Gradient banner override for perks page */
+.london-theme .from-blue-600 {
+  --tw-gradient-from: #E32017 !important; /* Central red */
+}
+.london-theme .to-indigo-700 {
+  --tw-gradient-to: #9B0056 !important; /* Metropolitan */
+}
+
+/* Category filter pills */
+.london-theme .rounded-full.bg-blue-600 {
+  background-color: #003688 !important;
+}
+
+/* Blog/page category badges */
+.london-theme .bg-blue-500 {
+  background-color: #0098D4 !important; /* Victoria blue */
+}
+
+/* Links */
+.london-theme a.text-blue-600:hover {
+  color: #c41a12 !important;
+}
+
+/* Hide elements marked with .london-hide when London theme is active */
+.london-theme .london-hide {
+  display: none;
+}

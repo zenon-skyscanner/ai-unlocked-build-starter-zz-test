@@ -13,9 +13,11 @@ interface Props {
   autosuggestEndpoint: string;
   onSelect: (place: Place) => void;
   placeholder?: string;
+  inputClassName?: string;
+  labelClassName?: string;
 }
 
-export default function LocationSearch({ id, label, autosuggestEndpoint, onSelect, placeholder }: Props) {
+export default function LocationSearch({ id, label, autosuggestEndpoint, onSelect, placeholder, inputClassName, labelClassName }: Props) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Place[]>([]);
   const [open, setOpen] = useState(false);
@@ -63,7 +65,7 @@ export default function LocationSearch({ id, label, autosuggestEndpoint, onSelec
 
   return (
     <div ref={containerRef} className="relative">
-      <label htmlFor={id} className="block text-gray-700 font-semibold mb-2">
+      <label htmlFor={id} className={labelClassName ?? "block text-gray-700 font-semibold mb-2"}>
         {label}
       </label>
       <input
@@ -77,7 +79,7 @@ export default function LocationSearch({ id, label, autosuggestEndpoint, onSelec
         placeholder={placeholder ?? 'e.g. London'}
         required
         autoComplete="off"
-        className="w-full border rounded px-4 py-2"
+        className={inputClassName ?? "w-full border rounded px-4 py-2"}
       />
       {open && suggestions.length > 0 && (
         <ul className="absolute z-10 w-full bg-white border rounded shadow-lg mt-1 max-h-60 overflow-auto">

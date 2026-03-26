@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import TravelPerks from '../components/TravelPerks';
+---
+
+<Layout>
+	<Navigation currentPath="/perks" />
+
+	<main class="container mx-auto px-4 py-12">
+		<section class="text-center mb-16">
+			<h1 class="text-5xl font-bold text-blue-600 mb-4">Travel Perks</h1>
+			<p class="text-xl text-gray-600">Exclusive discounts on travel extras, personalised for your trip</p>
+		</section>
+		<section class="max-w-6xl mx-auto">
+			<TravelPerks client:load />
+		</section>
+	</main>
+</Layout>
